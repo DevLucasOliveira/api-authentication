@@ -82,7 +82,7 @@ namespace Authentication.Tests.ValueObjects
         }
 
         [Fact]
-        public void VerifyPassword_WhenPasswordIsValid_ShouldReturnTrue()
+        public void VerifyPassword_WhenPasswordIsTheSame_ShouldReturnTrue()
         {
             var passwordCommand = "HEJDKCcxsjeU@Uab82";
             var passwordUser = "HEJDKCcxsjeU@Uab82";
@@ -94,7 +94,7 @@ namespace Authentication.Tests.ValueObjects
 
 
         [Fact]
-        public void VerifyPassword_WhenPasswordIsInvalid_ShouldReturnFalse()
+        public void VerifyPassword_WhenPasswordIsNotTheSame_ShouldReturnFalse()
         {
             var passwordCommand = "HEJDKCcxsjeU@Uab82";
             var passwordUser = "HEJDKCcxsjeU@Uab23";

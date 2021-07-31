@@ -1,6 +1,6 @@
 ﻿using Authentication.Domain.Commands;
 using Authentication.Domain.DTOs;
-using Authentication.Domain.Repositories;
+using Authentication.Domain.Repositories.Interfaces;
 using Authentication.Domain.Services.Interfaces;
 using Authentication.Domain.ValueObjects;
 using MediatR;
@@ -46,7 +46,7 @@ namespace Authentication.Domain.Handlers
         {
             command.Validate();
             if (command.Invalid)
-                return new RequestResult(false, "Ocorreu um erro", false);
+                return new RequestResult(false, "Ocorreu um erro", new PasswordDTO(command.Password, false));
 
             var passwordDTO = new PasswordDTO
             {
@@ -54,12 +54,12 @@ namespace Authentication.Domain.Handlers
                 IsValid = Password.ValidatePassword(command.Password)
             };
 
-            return new RequestResult(true, "Token gerado com sucesso", passwordDTO);
+            return new RequestResult(true, "Senha verificada com sucesso", passwordDTO);
         }
 
-        public string GeneratePassword()
+        public RequestResult GeneratePassword()
         {
-            return new Password().GeneratePassword();
+            return new RequestResult(true, "Senha gerada com sucesso", new Password().GeneratePassword());
         }
 
     }

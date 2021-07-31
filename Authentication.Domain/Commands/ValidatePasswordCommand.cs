@@ -10,7 +10,9 @@ namespace Authentication.Domain.Commands
 
         public void Validate()
         {
-            throw new System.NotImplementedException();
+            AddNotifications(new Contract()
+                           .Requires()
+                           .IsNotNullOrEmpty(Password, "Password", "A senha não pode ser nula"));
         }
     }
 }

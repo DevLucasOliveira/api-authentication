@@ -2,7 +2,7 @@
 using Authentication.Domain.DTOs;
 using Authentication.Domain.Entities;
 using Authentication.Domain.Handlers;
-using Authentication.Domain.Repositories;
+using Authentication.Domain.Repositories.Interfaces;
 using Authentication.Domain.Services.Interfaces;
 using Authentication.Domain.ValueObjects;
 using Moq;
@@ -113,5 +113,81 @@ namespace Authentication.Tests.Handlers
             _mockedUserRepository.Verify(x => x.GetUser(It.IsAny<string>()), Times.Once);
             _mockedTokenService.Verify(x => x.GenerateToken(It.IsAny<User>()), Times.Once);
         }
+
+        [Fact]
+        public void ValidatePasswordCommand_WhenCommandIsInvalid_ShouldReturnError()
+        {
+            // Arrange
+            var command = new ValidatePasswordCommand { Password = "" };
+
+            // Act
+            var result = _userHandler.Handle(command, It.IsAny<CancellationToken>()).Result;
+            var content = result.Data as PasswordDTO;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.False(result.Success);
+            Assert.NotEmpty(result.Message);
+            Assert.NotNull(result.Data);
+            Assert.IsType<PasswordDTO>(result.Data);
+            Assert.False(content.IsValid);
+        }
+
+        [Fact]
+        public void ValidatePasswordCommand_WhenPasswordIsInvalid_ShouldReturnError()
+        {
+            // Arrange
+            var command = new ValidatePasswordCommand { Password = "yv1NVfWXWOTYHI" };
+
+            // Act
+            var result = _userHandler.Handle(command, It.IsAny<CancellationToken>()).Result;
+            var content = result.Data as PasswordDTO;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.True(result.Success);
+            Assert.NotEmpty(result.Message);
+            Assert.NotNull(result.Data);
+            Assert.IsType<PasswordDTO>(result.Data);
+            Assert.False(content.IsValid);
+            Assert.NotNull(content.Password);
+        }
+
+        [Fact]
+        public void ValidatePasswordCommand_WhenPasswordIsValid_ShouldReturnSuccess()
+        {
+            // Arrange
+            var command = new ValidatePasswordCommand { Password = "yv1NV3afZgT!fWXWOTYHI" };
+
+            // Act
+            var result = _userHandler.Handle(command, It.IsAny<CancellationToken>()).Result;
+            var content = result.Data as PasswordDTO;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.True(result.Success);
+            Assert.NotEmpty(result.Message);
+            Assert.NotNull(result.Data);
+            Assert.IsType<PasswordDTO>(result.Data);
+            Assert.True(content.IsValid);
+            Assert.NotNull(content.Password);
+        }
+
+        [Fact]
+        public void GeneratePassword_ShouldReturnOk()
+        {
+            // Act
+            var result = _userHandler.GeneratePassword();
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.True(result.Success);
+            Assert.NotEmpty(result.Message);
+            Assert.NotNull(result.Data);
+            Assert.IsType<string>(result.Data);
+        }
+
+
+
     }
 }

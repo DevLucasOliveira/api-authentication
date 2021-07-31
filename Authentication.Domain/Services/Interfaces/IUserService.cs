@@ -1,7 +1,9 @@
-﻿namespace Authentication.Domain.Services.Interfaces
+﻿using Authentication.Domain.Commands;
+
+namespace Authentication.Domain.Services.Interfaces
 {
     public interface IUserService
     {
-        string GeneratePassword();
+        RequestResult GeneratePassword();
     }
 }
