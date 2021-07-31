@@ -1,9 +1,8 @@
 ﻿using Authentication.Domain.Commands;
+using Authentication.Domain.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace Authentication.Api.Controllers
 {
@@ -12,17 +11,35 @@ namespace Authentication.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-
+        // Método 1
         [HttpPost]
         [Route("token")]
         [AllowAnonymous]
-        public async Task<IActionResult> ValidateUser(
+        public IActionResult ValidateUser(
             [FromBody] ValidateUserCommand command,
             [FromServices] IMediator mediator)
         {
             return Ok(mediator.Send(command));
         }
 
+        // Método 2
+        [HttpPost]
+        [Route("security")]
+        public IActionResult ValidatePassword(
+            [FromBody] ValidateUserCommand command,
+            [FromServices] IMediator mediator)
+        {
+            return Ok(mediator.Send(command));
+        }
+
+        // Método 3
+        [HttpPost]
+        [Route("")]
+        public IActionResult GeneratePassword(
+            [FromServices] IUserService userService)
+        {
+            return Ok(userService.GeneratePassword());
+        }
 
     }
 }

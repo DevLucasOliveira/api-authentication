@@ -1,9 +1,13 @@
 using Authentication.Api.Configurations;
+using Authentication.Domain.Handlers;
+using Authentication.Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
+using MediatR;
 
 namespace Authentication.Api
 {
@@ -21,6 +25,10 @@ namespace Authentication.Api
             services.AddControllers();
             services.AddSwaggerConfiguration();
             services.AddTokenConfiguration();
+            services.AddScoped<IUserService, UserHandler>();
+            services.AddScoped<UserHandler>();
+            // Verificar
+            //services.AddMediatR(typeof(UserHandler).GetTypeInfo().Assembly);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

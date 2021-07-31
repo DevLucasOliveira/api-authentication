@@ -15,6 +15,7 @@ namespace Authentication.Domain.Services
         public TokenDTO GenerateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
+            // colocar secret no appsettings
             var key = Encoding.ASCII.GetBytes("dd%88*377AFuZReDaKB7oM5BKuUSnziXtES6HfDG^/8");
 
             var claims = new List<Claim>()

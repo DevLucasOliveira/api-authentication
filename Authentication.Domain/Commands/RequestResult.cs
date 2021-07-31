@@ -4,6 +4,12 @@
     {
         public RequestResult() { }
 
+        public RequestResult(bool success, string message)
+        {
+            Success = success;
+            Message = message;
+        }
+
         public RequestResult(bool success, string message, object data)
         {
             Success = success;
