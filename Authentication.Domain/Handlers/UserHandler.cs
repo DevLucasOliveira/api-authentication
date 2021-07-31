@@ -26,27 +26,27 @@ namespace Authentication.Domain.Handlers
         {
             command.Validate();
             if (command.Invalid)
-                return new RequestResult(false, "Ocorreu um erro", new UserDTO(command.Email, false));
+                return new RequestResult("Email ou senha inválidos", new UserDTO(command.Email, false));
 
             var user = _userRepository.GetUser(command.Email);
             if (user == null)
-                return new RequestResult(false, "Email ou senha inválida", new UserDTO(command.Email, false));
+                return new RequestResult("Email ou senha inválidos", new UserDTO(command.Email, false));
 
             var passwordValid = Password.VerifyPassword(command.Password, user.Password.PasswordUser);
             if (!passwordValid)
-                return new RequestResult(false, "Email ou senha inválida", new UserDTO(command.Email, false));
+                return new RequestResult("Email ou senha inválidos", new UserDTO(command.Email, false));
 
             var token = _tokenService.GenerateToken(user);
             var userDTO = new UserDTO(user.Email, true, token.Token, token.ExpireIn);
 
-            return new RequestResult(true, "Token gerado com sucesso", userDTO);
+            return new RequestResult("Token gerado com sucesso", userDTO);
         }
 
         public async Task<RequestResult> Handle(ValidatePasswordCommand command, CancellationToken cancellationToken)
         {
             command.Validate();
             if (command.Invalid)
-                return new RequestResult(false, "Ocorreu um erro", new PasswordDTO(command.Password, false));
+                return new RequestResult("A senha não pode ser nula", new PasswordDTO(command.Password, false));
 
             var passwordDTO = new PasswordDTO
             {
@@ -54,12 +54,12 @@ namespace Authentication.Domain.Handlers
                 IsValid = Password.ValidatePassword(command.Password)
             };
 
-            return new RequestResult(true, "Senha verificada com sucesso", passwordDTO);
+            return new RequestResult("Senha verificada com sucesso", passwordDTO);
         }
 
         public RequestResult GeneratePassword()
         {
-            return new RequestResult(true, "Senha gerada com sucesso", new Password().GeneratePassword());
+            return new RequestResult("Senha gerada com sucesso", new Password().GeneratePassword());
         }
 
     }

@@ -37,7 +37,6 @@ namespace Authentication.Tests.Handlers
 
             // Assert
             Assert.NotNull(result);
-            Assert.False(result.Success);
             Assert.NotEmpty(result.Message);
             Assert.NotNull(result.Data);
             Assert.IsType<UserDTO>(result.Data);
@@ -57,7 +56,6 @@ namespace Authentication.Tests.Handlers
 
             // Assert
             Assert.NotNull(result);
-            Assert.False(result.Success);
             Assert.NotEmpty(result.Message);
             Assert.NotNull(result.Data);
             Assert.IsType<UserDTO>(result.Data);
@@ -80,7 +78,6 @@ namespace Authentication.Tests.Handlers
 
             // Assert
             Assert.NotNull(result);
-            Assert.False(result.Success);
             Assert.NotEmpty(result.Message);
             Assert.NotNull(result.Data);
             Assert.IsType<UserDTO>(result.Data);
@@ -105,7 +102,6 @@ namespace Authentication.Tests.Handlers
 
             // Assert
             Assert.NotNull(result);
-            Assert.True(result.Success);
             Assert.NotEmpty(result.Message);
             Assert.NotNull(result.Data);
             Assert.IsType<UserDTO>(result.Data);
@@ -126,7 +122,6 @@ namespace Authentication.Tests.Handlers
 
             // Assert
             Assert.NotNull(result);
-            Assert.False(result.Success);
             Assert.NotEmpty(result.Message);
             Assert.NotNull(result.Data);
             Assert.IsType<PasswordDTO>(result.Data);
@@ -145,7 +140,6 @@ namespace Authentication.Tests.Handlers
 
             // Assert
             Assert.NotNull(result);
-            Assert.True(result.Success);
             Assert.NotEmpty(result.Message);
             Assert.NotNull(result.Data);
             Assert.IsType<PasswordDTO>(result.Data);
@@ -165,7 +159,6 @@ namespace Authentication.Tests.Handlers
 
             // Assert
             Assert.NotNull(result);
-            Assert.True(result.Success);
             Assert.NotEmpty(result.Message);
             Assert.NotNull(result.Data);
             Assert.IsType<PasswordDTO>(result.Data);
@@ -181,7 +174,6 @@ namespace Authentication.Tests.Handlers
 
             // Assert
             Assert.NotNull(result);
-            Assert.True(result.Success);
             Assert.NotEmpty(result.Message);
             Assert.NotNull(result.Data);
             Assert.IsType<string>(result.Data);

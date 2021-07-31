@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Text;
 
 namespace Authentication.Api.Configurations
@@ -25,7 +26,8 @@ namespace Authentication.Api.Configurations
                          ValidateIssuerSigningKey = true,
                          IssuerSigningKey = new SymmetricSecurityKey(key),
                          ValidateIssuer = false,
-                         ValidateAudience = false
+                         ValidateAudience = false,
+                         ClockSkew = TimeSpan.Zero
                      };
                  });
         }

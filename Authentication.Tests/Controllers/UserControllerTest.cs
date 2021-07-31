@@ -30,7 +30,7 @@ namespace Authentication.Tests.Controllers
             _mediator.Setup(x => x.Send(It.IsAny<ValidateUserCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new RequestResult());
 
             // Act
-            var response = _userController.ValidateUser(command, _mediator.Object);
+            var response = _userController.ValidateUser(command, _mediator.Object).Result;
             var objectResult = response as OkObjectResult;
             
             // Assert

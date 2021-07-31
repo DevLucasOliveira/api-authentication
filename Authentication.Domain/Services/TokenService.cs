@@ -15,7 +15,6 @@ namespace Authentication.Domain.Services
         public TokenDTO GenerateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            // colocar secret no appsettings
             var key = Encoding.ASCII.GetBytes("dd%88*377AFuZReDaKB7oM5BKuUSnziXtES6HfDG^/8");
 
             var claims = new List<Claim>()
@@ -24,7 +23,7 @@ namespace Authentication.Domain.Services
                 new Claim("user_email", user.Email),
             };
 
-            var expireIn = DateTime.UtcNow.AddMinutes(5);
+            var expireIn = GetBrazilTimezone().AddMinutes(5);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
@@ -37,6 +36,13 @@ namespace Authentication.Domain.Services
 
             return new TokenDTO(token, expireIn);
         }
+
+        private DateTime GetBrazilTimezone()
+        {
+            var brasiliaTime = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+            return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, brasiliaTime);
+        }
+
 
     }
 }
