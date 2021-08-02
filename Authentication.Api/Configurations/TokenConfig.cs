@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Authentication.Domain.Utils;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -10,7 +11,7 @@ namespace Authentication.Api.Configurations
     {
         public static void AddTokenConfiguration(this IServiceCollection services)
         {
-            var key = Encoding.ASCII.GetBytes("dd%88*377AFuZReDaKB7oM5BKuUSnziXtES6HfDG^/8");
+            var key = Encoding.ASCII.GetBytes(Settings.Secret);
             services.AddAuthentication(x =>
             {
 

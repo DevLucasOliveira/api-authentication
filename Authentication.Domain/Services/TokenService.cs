@@ -1,6 +1,7 @@
 ﻿using Authentication.Domain.DTOs;
 using Authentication.Domain.Entities;
 using Authentication.Domain.Services.Interfaces;
+using Authentication.Domain.Utils;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Authentication.Domain.Services
         public TokenDTO GenerateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("dd%88*377AFuZReDaKB7oM5BKuUSnziXtES6HfDG^/8");
+            var key = Encoding.ASCII.GetBytes(Settings.Secret);
 
             var claims = new List<Claim>()
             {
@@ -23,7 +24,7 @@ namespace Authentication.Domain.Services
                 new Claim("user_email", user.Email),
             };
 
-            var expireIn = GetBrazilTimezone().AddMinutes(5);
+            var expireIn = DateTime.UtcNow.AddMinutes(5);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
@@ -34,13 +35,13 @@ namespace Authentication.Domain.Services
             var tokenWrite = tokenHandler.CreateToken(tokenDescriptor);
             var token = tokenHandler.WriteToken(tokenWrite);
 
-            return new TokenDTO(token, expireIn);
+            return new TokenDTO(token, GetBrazilTimezone(expireIn));
         }
 
-        private DateTime GetBrazilTimezone()
+        private DateTime GetBrazilTimezone(DateTime dateUtc)
         {
             var brasiliaTime = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
-            return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, brasiliaTime);
+            return TimeZoneInfo.ConvertTimeFromUtc(dateUtc, brasiliaTime);
         }
 
 
